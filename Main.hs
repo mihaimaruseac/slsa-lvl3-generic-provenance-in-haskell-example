@@ -2,4 +2,5 @@ module Main where
 
 main :: IO ()
 main = do
-  putStrLn "Hello, Haskell!"
+  mapM putStrLn ["Hello, Haskell!", "Hello!"]
+  return ()
