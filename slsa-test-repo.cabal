@@ -1,7 +1,7 @@
 cabal-version:       >=1.10
 
 name:                slsa-test-repo
-version:             0.0.1.0
+version:             0.0.1.1
 synopsis:            Haskell package to test SLSA L3 provenance for Haskell
 license:             MIT
 license-file:        LICENSE
