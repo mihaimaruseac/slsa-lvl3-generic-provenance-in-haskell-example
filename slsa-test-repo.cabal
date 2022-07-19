@@ -1,0 +1,17 @@
+cabal-version:       >=1.10
+
+name:                slsa-test-repo
+version:             0.0.1.0
+synopsis:            Haskell package to test SLSA L3 provenance for Haskell
+license:             MIT
+license-file:        LICENSE
+author:              Mihai Maruseac
+maintainer:          mihaimaruseac@google.com
+category:            Experimental
+build-type:          Simple
+extra-source-files:  CHANGELOG.md, README.md, SECURITY.md
+
+executable slsa-test-repo
+  main-is:             Main.hs
+  build-depends:       base >=4.13 && <4.14
+  default-language:    Haskell2010
