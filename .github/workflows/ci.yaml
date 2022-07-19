@@ -67,8 +67,6 @@ jobs:
     needs: [build]
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3             # TODO(mihaimaruseac): pin by hash
       - name: Set up HLint
         uses: haskell/actions/hlint-setup@v2  # TODO(mihaimaruseac): pin by hash
       - name: Run HLint
