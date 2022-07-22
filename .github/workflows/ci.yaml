@@ -12,9 +12,9 @@ jobs:
       hashes: ${{ steps.hash.outputs.hashes }}
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3       # TODO(mihaimaruseac): pin by hash
+        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # tag=v3
       - name: Setup Haskell
-        uses: haskell/actions/setup@v1  # TODO(mihaimaruseac): pin by hash
+        uses: haskell/actions/setup@745062a754c3c4b70b87cb93937ad443096cc94d # tag=v1
       - name: Build artifacts
         run: |
           cabal build
@@ -68,11 +68,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3             # TODO(mihaimaruseac): pin by hash
+        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # tag=v3
       - name: Set up HLint
-        uses: haskell/actions/hlint-setup@v2  # TODO(mihaimaruseac): pin by hash
+        uses: haskell/actions/hlint-setup@745062a754c3c4b70b87cb93937ad443096cc94d # tag=v1
       - name: Run HLint
-        uses: haskell/actions/hlint-run@v2
+        uses: haskell/actions/hlint-run@745062a754c3c4b70b87cb93937ad443096cc94d # tag=v1
         with:
           path: .
           fail-on: warning
