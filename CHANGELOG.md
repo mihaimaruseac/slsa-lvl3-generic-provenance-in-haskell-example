@@ -1,5 +1,9 @@
 # Revision history for slsa-test-repo
 
+## FUTURE RELEASE
+
+* TODO: Add items here as they occur
+
 ## 0.0.1.2 -- 2022-07-22
 
 * Bump GitHub Actions for provenance
