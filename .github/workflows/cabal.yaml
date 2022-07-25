@@ -1,0 +1,77 @@
+name: Release (with Cabal)
+
+on:
+  workflow_dispatch:
+  release:
+    types: [created]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    outputs:
+      hashes: ${{ steps.hash.outputs.hashes }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # tag=v3
+      - name: Setup Haskell
+        uses: haskell/actions/setup@745062a754c3c4b70b87cb93937ad443096cc94d # tag=v1
+      - name: Build artifacts
+        run: |
+          cabal build
+          cp $(cabal list-bin .) ./built-with-cabal
+      - name: Generate subject for provenance
+        id: hash
+        run: |
+          set -euo pipefail
+          echo "::set-output name=hashes::$(sha256sum built-with-cabal | base64 -w0)"
+      - name: Upload artifacts
+        uses: actions/upload-artifact@3cea5372237819ed00197afe530f5a7ea3e805c8 # tag=v3.1.0
+        with:
+          name: built-with-cabal
+          path: built-with-cabal
+          if-no-files-found: error
+          retention-days: 5
+
+  provenance:
+    needs: [build]
+    permissions:
+      actions: read
+      id-token: write
+      contents: write
+    uses: slsa-framework/slsa-github-generator/.github/workflows/generator_generic_slsa3.yml@v1.2.0
+    with:
+      base64-subjects: "${{ needs.build.outputs.hashes }}"
+      upload-assets: true
+
+  release:
+    needs: [build, provenance]
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741 # tag=v2.1.0
+        with:
+          name: built-with-cabal
+      - name: Download attestation
+        uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741 # tag=v2.1.0
+        with:
+          name: attestation.intoto.jsonl
+      - name: Upload assets
+        uses: softprops/action-gh-release@1e07f4398721186383de40550babbdf2b84acfc5 # v0.1.14
+        with:
+          files: |
+            built-with-cabal
+
+  hlint:
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # tag=v3
+      - name: Set up HLint
+        uses: haskell/actions/hlint-setup@745062a754c3c4b70b87cb93937ad443096cc94d # tag=v1
+      - name: Run HLint
+        uses: haskell/actions/hlint-run@745062a754c3c4b70b87cb93937ad443096cc94d # tag=v1
+        with:
+          path: .
+          fail-on: warning

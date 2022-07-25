@@ -1,4 +1,4 @@
-name: Release
+name: Release (with Stack)
 
 on:
   workflow_dispatch:
@@ -15,20 +15,22 @@ jobs:
         uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # tag=v3
       - name: Setup Haskell
         uses: haskell/actions/setup@745062a754c3c4b70b87cb93937ad443096cc94d # tag=v1
+        with:
+          enable-stack: true
       - name: Build artifacts
         run: |
-          cabal build
-          cp $(cabal list-bin .) .
+          stack build
+          cp $(stack path --local-install-root)/bin/slsa-test-repo ./built-with-stack
       - name: Generate subject for provenance
         id: hash
         run: |
           set -euo pipefail
-          echo "::set-output name=hashes::$(sha256sum slsa-test-repo | base64 -w0)"
+          echo "::set-output name=hashes::$(sha256sum built-with-stack | base64 -w0)"
       - name: Upload artifacts
         uses: actions/upload-artifact@3cea5372237819ed00197afe530f5a7ea3e805c8 # tag=v3.1.0
         with:
-          name: slsa-test-repo
-          path: slsa-test-repo
+          name: built-with-stack
+          path: built-with-stack
           if-no-files-found: error
           retention-days: 5
 
@@ -51,27 +53,9 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741 # tag=v2.1.0
         with:
-          name: slsa-test-repo
-      - name: Download attestation
-        uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741 # tag=v2.1.0
-        with:
-          name: attestation.intoto.jsonl
+          name: built-with-stack
       - name: Upload assets
         uses: softprops/action-gh-release@1e07f4398721186383de40550babbdf2b84acfc5 # v0.1.14
         with:
           files: |
-            slsa-test-repo
-
-  hlint:
-    needs: [build]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # tag=v3
-      - name: Set up HLint
-        uses: haskell/actions/hlint-setup@745062a754c3c4b70b87cb93937ad443096cc94d # tag=v1
-      - name: Run HLint
-        uses: haskell/actions/hlint-run@745062a754c3c4b70b87cb93937ad443096cc94d # tag=v1
-        with:
-          path: .
-          fail-on: warning
+            built-with-stack
