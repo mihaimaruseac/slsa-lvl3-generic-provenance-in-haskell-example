@@ -44,6 +44,7 @@ jobs:
     with:
       base64-subjects: "${{ needs.build.outputs.hashes }}"
       upload-assets: true
+      attestation-name: built-with-stack-attestation.intoto.jsonl
 
   release:
     needs: [build, provenance]
