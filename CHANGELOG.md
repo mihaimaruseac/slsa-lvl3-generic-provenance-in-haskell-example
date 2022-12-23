@@ -4,6 +4,15 @@
 
 * TODO: Add items here as they occur
 
+## 0.0.1.3 -- 2022-12-23
+
+* Build with Stack and Cabal
+* Don't download attestation when not needed
+* Separate the attestations for the 2 build system
+* Change stack resolver to latest LTS (20.4)
+* Update GitHub Actions and workflows to latest versions
+* Fixes workflows broken by the removal of `set-output` from GitHub Actions
+
 ## 0.0.1.2 -- 2022-07-22
 
 * Bump GitHub Actions for provenance
