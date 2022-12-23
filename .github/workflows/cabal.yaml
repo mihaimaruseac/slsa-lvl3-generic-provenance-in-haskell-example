@@ -12,20 +12,26 @@ jobs:
       hashes: ${{ steps.hash.outputs.hashes }}
     steps:
       - name: Checkout code
-        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # tag=v3
+        uses: actions/checkout@755da8c3cf115ac066823e79a1e1788f8940201b # v3.2.0
+        with:
+          persist-credentials: false
+
       - name: Setup Haskell
         uses: haskell/actions/setup@745062a754c3c4b70b87cb93937ad443096cc94d # tag=v1
+
       - name: Build artifacts
         run: |
           cabal build
           cp $(cabal list-bin .) ./built-with-cabal
+
       - name: Generate subject for provenance
         id: hash
         run: |
           set -euo pipefail
-          echo "::set-output name=hashes::$(sha256sum built-with-cabal | base64 -w0)"
+          echo "hashes=$(sha256sum built-with-cabal | base64 -w0)" >> "${GITHUB_OUTPUT}"
+
       - name: Upload artifacts
-        uses: actions/upload-artifact@3cea5372237819ed00197afe530f5a7ea3e805c8 # tag=v3.1.0
+        uses: actions/upload-artifact@83fd05a356d7e2593de66fc9913b3002723633cb # v3.1.1
         with:
           name: built-with-cabal
           path: built-with-cabal
@@ -38,7 +44,7 @@ jobs:
       actions: read
       id-token: write
       contents: write
-    uses: slsa-framework/slsa-github-generator/.github/workflows/generator_generic_slsa3.yml@v1.2.0
+    uses: slsa-framework/slsa-github-generator/.github/workflows/generator_generic_slsa3.yml@v1.4.0
     with:
       base64-subjects: "${{ needs.build.outputs.hashes }}"
       upload-assets: true
@@ -50,11 +56,12 @@ jobs:
     if: startsWith(github.ref, 'refs/tags/')
     steps:
       - name: Download artifact
-        uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741 # tag=v2.1.0
+        uses: actions/download-artifact@9782bd6a9848b53b110e712e20e42d89988822b7 # v3.0.1
         with:
           name: built-with-cabal
+
       - name: Upload assets
-        uses: softprops/action-gh-release@1e07f4398721186383de40550babbdf2b84acfc5 # v0.1.14
+        uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844 # v0.1.15
         with:
           files: |
             built-with-cabal
@@ -64,9 +71,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # tag=v3
+        uses: actions/checkout@755da8c3cf115ac066823e79a1e1788f8940201b # v3.2.0
+        with:
+          persist-credentials: false
+
       - name: Set up HLint
         uses: haskell/actions/hlint-setup@745062a754c3c4b70b87cb93937ad443096cc94d # tag=v1
+
       - name: Run HLint
         uses: haskell/actions/hlint-run@745062a754c3c4b70b87cb93937ad443096cc94d # tag=v1
         with:
