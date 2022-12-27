@@ -4,6 +4,11 @@
 
 * TODO: Add items here as they occur
 
+## 0.0.1.4 -- 2022-12-27
+
+* Update GitHub Actions workflows to contain a CI job on each PR/commit
+* Move hlint step to CI workflow instead of release workflow
+
 ## 0.0.1.3 -- 2022-12-23
 
 * Build with Stack and Cabal
