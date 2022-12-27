@@ -67,6 +67,7 @@ jobs:
             built-with-cabal
 
   hlint:
+    needs: [build]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
