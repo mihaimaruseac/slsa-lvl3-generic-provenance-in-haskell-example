@@ -27,7 +27,6 @@ jobs:
           cabal build
 
   hlint:
-    needs: [build]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
