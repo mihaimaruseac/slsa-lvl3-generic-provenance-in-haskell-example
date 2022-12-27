@@ -1,0 +1,45 @@
+name: Standard CI
+
+on:
+  push:
+    braches: [master]
+  pull_request:
+    branches: [master]
+    types: [opened, synchronize, reopened]
+  pull_request_review:
+    branches: [master]
+    types: [submitted]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@755da8c3cf115ac066823e79a1e1788f8940201b # v3.2.0
+        with:
+          persist-credentials: false
+
+      - name: Setup Haskell
+        uses: haskell/actions/setup@745062a754c3c4b70b87cb93937ad443096cc94d # tag=v1
+
+      - name: Build artifacts
+        run: |
+          cabal build
+
+  hlint:
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@755da8c3cf115ac066823e79a1e1788f8940201b # v3.2.0
+        with:
+          persist-credentials: false
+
+      - name: Set up HLint
+        uses: haskell/actions/hlint-setup@745062a754c3c4b70b87cb93937ad443096cc94d # tag=v1
+
+      - name: Run HLint
+        uses: haskell/actions/hlint-run@745062a754c3c4b70b87cb93937ad443096cc94d # tag=v1
+        with:
+          path: .
+          fail-on: warning
