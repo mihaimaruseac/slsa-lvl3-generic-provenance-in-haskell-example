@@ -1,15 +1,25 @@
-cabal-version:       >=1.10
-
+cabal-version:       3.6
 name:                slsa-test-repo
 version:             0.0.1.4
 synopsis:            Haskell package to test SLSA L3 provenance for Haskell
+description:         Nothing useful in this package. It will not be uploaded
+                     to Hackage, it only exists to demonstrate/test SLSA L3
+                     provenance via the generic generator.
+
 license:             MIT
 license-file:        LICENSE
+
 author:              Mihai Maruseac
 maintainer:          mihaimaruseac@google.com
+
 category:            Experimental
 build-type:          Simple
+
 extra-source-files:  CHANGELOG.md, README.md, SECURITY.md
+
+source-repository head
+  type:              git
+  location:          https://github.com/haskell-ro/io-manager
 
 executable slsa-test-repo
   main-is:             Main.hs
