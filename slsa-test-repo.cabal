@@ -19,7 +19,7 @@ extra-source-files:  CHANGELOG.md, README.md, SECURITY.md
 
 source-repository head
   type:              git
-  location:          https://github.com/haskell-ro/io-manager
+  location:          https://github.com/mihaimaruseac/slsa-lvl3-generic-provenance-in-haskell-example
 
 executable slsa-test-repo
   main-is:             Main.hs
