@@ -17,7 +17,7 @@ jobs:
           persist-credentials: false
 
       - name: Setup Haskell
-        uses: haskell/actions/setup@745062a754c3c4b70b87cb93937ad443096cc94d # tag=v1
+        uses: haskell/actions/setup@5ff2575cfa27ef8693b7252e0ed1cb0ad87af57e # tag=v1
         with:
           enable-stack: true
 
