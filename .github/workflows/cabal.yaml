@@ -17,7 +17,7 @@ jobs:
           persist-credentials: false
 
       - name: Setup Haskell
-        uses: haskell/actions/setup@d6a7b316f66cd8a730ed619cdc80c276df942196 # v2.4.3
+        uses: haskell/actions/setup@fc675398fab930927d01e9c00eee89066aa2ca12 # v2.4.4
 
       - name: Build artifacts
         run: |
